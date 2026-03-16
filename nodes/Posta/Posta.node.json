@@ -1,0 +1,22 @@
+{
+	"node": "n8n-nodes-posta.posta",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Marketing & Content"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://getposta.app/docs/api"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://getposta.app/docs/n8n"
+			}
+		]
+	},
+	"alias": ["social media", "scheduling", "instagram", "tiktok", "facebook", "linkedin", "twitter", "youtube", "pinterest", "threads", "bluesky", "analytics"],
+	"subcategories": {
+		"Marketing & Content": ["Social Media"]
+	}
+}
