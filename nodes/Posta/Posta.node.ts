@@ -48,18 +48,6 @@ export class Posta implements INodeType {
 			{
 				name: 'postaApi',
 				required: true,
-				displayOptions: {
-					show: {
-						resource: [
-							'post',
-							'media',
-							'socialAccount',
-							'analytics',
-							'user',
-							'webhook',
-						],
-					},
-				},
 			},
 		],
 		properties: [
