@@ -21,13 +21,11 @@ export async function postaApiRequest(
 ): Promise<IDataObject | IDataObject[]> {
 	const credentials = await this.getCredentials('postaApi');
 	const baseUrl = credentials.baseUrl as string;
-	const token = credentials.apiToken as string;
 
 	const requestOptions: IHttpRequestOptions = {
 		method,
 		url: `${baseUrl}${endpoint}`,
 		headers: {
-			Authorization: `Bearer ${token}`,
 			'Content-Type': 'application/json',
 		},
 		qs,
@@ -40,7 +38,11 @@ export async function postaApiRequest(
 	}
 
 	try {
-		return (await this.helpers.httpRequest(requestOptions)) as IDataObject | IDataObject[];
+		return (await this.helpers.httpRequestWithAuthentication.call(
+			this,
+			'postaApi',
+			requestOptions,
+		)) as IDataObject | IDataObject[];
 	} catch (error) {
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}
