@@ -14,12 +14,11 @@ n8n-nodes-posta
 
 ## Setting Up Credentials
 
-1. In your n8n editor, click **Credentials** in the left sidebar
-2. Click **Add Credential** and search for **Posta API**
-3. Log in to [Posta](https://getposta.app) → **Settings → API Tokens** → **Generate Token**
-4. Copy the token (starts with `posta_...`) and paste it into the **API Token** field
-5. Leave the **Base URL** as `https://api.getposta.app/v1`
-6. Click **Test** to verify — you should see "Connection tested successfully"
+1. Log in to [Posta](https://getposta.app) → go to **Settings → API Tokens** → click **Generate Token** → copy the token (starts with `posta_...`)
+2. In your n8n editor, open any **Posta** node and click the **Credential** dropdown → **Create New Credential**
+3. Paste your token into the **API Token** field
+4. Leave **Base URL** as `https://api.getposta.app/v1`
+5. Click **Test** to verify the connection
 
 Full API reference: https://api.getposta.app/docs
 
