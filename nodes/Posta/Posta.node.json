@@ -6,7 +6,7 @@
 	"resources": {
 		"credentialDocumentation": [
 			{
-				"url": "https://getposta.app/docs/api"
+				"url": "https://api.getposta.app/docs"
 			}
 		],
 		"primaryDocumentation": [

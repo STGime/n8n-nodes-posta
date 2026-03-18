@@ -14,32 +14,14 @@ n8n-nodes-posta
 
 ## Setting Up Credentials
 
-Before using the Posta node, you need to create credentials in n8n:
-
 1. In your n8n editor, click **Credentials** in the left sidebar
 2. Click **Add Credential** and search for **Posta API**
-3. Choose an authentication method:
+3. Log in to [Posta](https://getposta.app) → **Settings → API Tokens** → **Generate Token**
+4. Copy the token (starts with `posta_...`) and paste it into the **API Token** field
+5. Leave the **Base URL** as `https://api.getposta.app/v1`
+6. Click **Test** to verify — you should see "Connection tested successfully"
 
-### Option A: API Token (Recommended)
-
-1. Log in to [Posta](https://getposta.app)
-2. Go to **Settings → API**
-3. Click **Generate Token** and copy the token (starts with `posta_...`)
-4. In n8n, select **API Token (Recommended)** as the authentication method
-5. Paste your token into the **API Token** field
-6. Leave the **Base URL** as `https://api.getposta.app/v1`
-7. Click **Test** to verify the connection — you should see "Connection tested successfully"
-
-### Option B: Email / Password
-
-1. In n8n, select **Email / Password** as the authentication method
-2. Enter the email and password you use to log in to Posta
-3. Leave the **Base URL** as `https://api.getposta.app/v1`
-4. Click **Test** to verify
-
-This mode automatically handles JWT token management — tokens are cached for 55 minutes and auto-refreshed on expiry or 401 responses.
-
-> **Note:** The API Token method is recommended because it doesn't require storing your password and tokens don't expire.
+Full API reference: https://api.getposta.app/docs
 
 ## Resources & Operations
 

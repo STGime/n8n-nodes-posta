@@ -16,28 +16,28 @@ export async function execute(
 		const body: IDataObject = { url, events };
 		if (additionalFields.description) body.description = additionalFields.description;
 
-		responseData = await postaApiRequest.call(this, 'POST', '/webhooks', body);
+		responseData = await postaApiRequest.call(this, 'POST', '/webhook-endpoints', body);
 	} else if (operation === 'getAll') {
-		responseData = await postaApiRequest.call(this, 'GET', '/webhooks');
+		responseData = await postaApiRequest.call(this, 'GET', '/webhook-endpoints');
 	} else if (operation === 'get') {
 		const webhookId = this.getNodeParameter('webhookId', i) as string;
-		responseData = await postaApiRequest.call(this, 'GET', `/webhooks/${webhookId}`);
+		responseData = await postaApiRequest.call(this, 'GET', `/webhook-endpoints/${webhookId}`);
 	} else if (operation === 'update') {
 		const webhookId = this.getNodeParameter('webhookId', i) as string;
 		const updateFields = this.getNodeParameter('updateFields', i, {}) as IDataObject;
 		responseData = await postaApiRequest.call(
 			this,
 			'PATCH',
-			`/webhooks/${webhookId}`,
+			`/webhook-endpoints/${webhookId}`,
 			updateFields,
 		);
 	} else if (operation === 'delete') {
 		const webhookId = this.getNodeParameter('webhookId', i) as string;
-		await postaApiRequest.call(this, 'DELETE', `/webhooks/${webhookId}`);
+		await postaApiRequest.call(this, 'DELETE', `/webhook-endpoints/${webhookId}`);
 		responseData = { success: true };
 	} else if (operation === 'test') {
 		const webhookId = this.getNodeParameter('webhookId', i) as string;
-		responseData = await postaApiRequest.call(this, 'POST', `/webhooks/${webhookId}/test`);
+		responseData = await postaApiRequest.call(this, 'POST', `/webhook-endpoints/${webhookId}/test`);
 	} else {
 		throw new Error(`Unknown operation: ${operation}`);
 	}

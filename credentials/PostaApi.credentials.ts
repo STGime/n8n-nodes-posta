@@ -8,62 +8,19 @@ import type {
 export class PostaApi implements ICredentialType {
 	name = 'postaApi';
 	displayName = 'Posta API';
-	documentationUrl = 'https://getposta.app/docs/api';
+	documentationUrl = 'https://api.getposta.app/docs';
 
 	properties: INodeProperties[] = [
-		{
-			displayName: 'Authentication Method',
-			name: 'authMethod',
-			type: 'options',
-			options: [
-				{
-					name: 'API Token (Recommended)',
-					value: 'apiToken',
-				},
-				{
-					name: 'Email / Password',
-					value: 'emailPassword',
-				},
-			],
-			default: 'apiToken',
-		},
 		{
 			displayName: 'API Token',
 			name: 'apiToken',
 			type: 'string',
 			typeOptions: { password: true },
 			default: '',
+			required: true,
 			placeholder: 'posta_xxx...',
-			description: 'Generate an API token from your Posta dashboard under Settings → API',
-			displayOptions: {
-				show: {
-					authMethod: ['apiToken'],
-				},
-			},
-		},
-		{
-			displayName: 'Email',
-			name: 'email',
-			type: 'string',
-			placeholder: 'name@email.com',
-			default: '',
-			displayOptions: {
-				show: {
-					authMethod: ['emailPassword'],
-				},
-			},
-		},
-		{
-			displayName: 'Password',
-			name: 'password',
-			type: 'string',
-			typeOptions: { password: true },
-			default: '',
-			displayOptions: {
-				show: {
-					authMethod: ['emailPassword'],
-				},
-			},
+			description:
+				'Generate an API token from your Posta dashboard under Settings → API Tokens',
 		},
 		{
 			displayName: 'Base URL',
