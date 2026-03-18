@@ -12,14 +12,34 @@ In your n8n instance, go to **Settings → Community Nodes** and install:
 n8n-nodes-posta
 ```
 
-## Credentials
+## Setting Up Credentials
 
-Two authentication modes:
+Before using the Posta node, you need to create credentials in n8n:
 
-| Mode | Fields | Description |
-|------|--------|-------------|
-| **API Token** (recommended) | API Token | Generate from Posta dashboard → Settings → API |
-| **Email / Password** | Email, Password | Auto-manages JWT tokens with refresh on 401 |
+1. In your n8n editor, click **Credentials** in the left sidebar
+2. Click **Add Credential** and search for **Posta API**
+3. Choose an authentication method:
+
+### Option A: API Token (Recommended)
+
+1. Log in to [Posta](https://getposta.app)
+2. Go to **Settings → API**
+3. Click **Generate Token** and copy the token (starts with `posta_...`)
+4. In n8n, select **API Token (Recommended)** as the authentication method
+5. Paste your token into the **API Token** field
+6. Leave the **Base URL** as `https://api.getposta.app/v1`
+7. Click **Test** to verify the connection — you should see "Connection tested successfully"
+
+### Option B: Email / Password
+
+1. In n8n, select **Email / Password** as the authentication method
+2. Enter the email and password you use to log in to Posta
+3. Leave the **Base URL** as `https://api.getposta.app/v1`
+4. Click **Test** to verify
+
+This mode automatically handles JWT token management — tokens are cached for 55 minutes and auto-refreshed on expiry or 401 responses.
+
+> **Note:** The API Token method is recommended because it doesn't require storing your password and tokens don't expire.
 
 ## Resources & Operations
 
@@ -57,14 +77,130 @@ Connect any n8n node that produces binary data (HTTP Request, Read File, etc.) u
 
 ## Example Workflows
 
-**Daily Auto-Post:**
-Schedule Trigger → OpenAI → HTTP Request (image) → Posta: Upload → Posta: Create Post → Posta: Schedule
+### 1. Check Connected Social Accounts
 
-**Weekly Analytics Report:**
-Cron → Posta: Analytics Overview → Posta: Export CSV → Gmail: Send Attachment
+See which social accounts (Instagram, TikTok, etc.) are connected to your Posta account.
 
-**Webhook Alerts:**
-Posta: Create Webhook → n8n Webhook Trigger → IF (failed) → Slack: Alert
+```
+Manual Trigger → Posta (Social Account: Get Many)
+```
+
+**Setup:**
+1. Add a **Manual Trigger** node
+2. Add a **Posta** node, set Resource = **Social Account**, Operation = **Get Many**
+3. Execute — the output shows each connected account with its `id`, `platform`, and `username`
+
+Use the account `id` values from this output whenever a post requires **Social Account IDs**.
+
+---
+
+### 2. Create and Publish a Post Directly
+
+Create a text post and publish it immediately to one or more channels.
+
+```
+Manual Trigger → Posta (Post: Create) → Posta (Post: Publish Now)
+```
+
+**Setup:**
+1. Add a **Manual Trigger** node
+2. Add a **Posta** node:
+   - Resource = **Post**, Operation = **Create**
+   - **Social Account IDs** = the account ID(s) from workflow 1 (comma-separated for multiple)
+   - **Caption** = your post text
+   - Under **Additional Fields**, set **Is Draft** = `false`
+3. Add another **Posta** node:
+   - Resource = **Post**, Operation = **Publish Now**
+   - **Post ID** = `{{ $json.id }}` (from the previous node's output)
+4. Execute to publish immediately
+
+---
+
+### 3. Create a Post with an Image
+
+Upload media first, then attach it to a post.
+
+```
+HTTP Request (download image) → Posta (Media: Upload) → Posta (Post: Create) → Posta (Post: Publish Now)
+```
+
+**Setup:**
+1. **HTTP Request** node: set the URL to your image, response format = **File**
+2. **Posta** node: Resource = **Media**, Operation = **Upload** — this handles the 3-step signed URL upload automatically
+3. **Posta** node: Resource = **Post**, Operation = **Create**
+   - **Social Account IDs** = your account ID(s)
+   - **Caption** = your post text
+   - Under **Additional Fields**, set **Media IDs** = `{{ $json.id }}` (the uploaded media ID)
+4. **Posta** node: Resource = **Post**, Operation = **Publish Now**, **Post ID** = `{{ $json.id }}`
+
+---
+
+### 4. Schedule a Post for Later
+
+Create a draft post and schedule it for a future date/time.
+
+```
+Manual Trigger → Posta (Post: Create) → Posta (Post: Schedule)
+```
+
+**Setup:**
+1. Add a **Manual Trigger** node
+2. **Posta** node: Resource = **Post**, Operation = **Create**
+   - **Social Account IDs** = your account ID(s)
+   - **Caption** = your post text
+3. **Posta** node: Resource = **Post**, Operation = **Schedule**
+   - **Post ID** = `{{ $json.id }}`
+   - **Scheduled At** = your desired publish time (ISO 8601, e.g. `2026-03-20T14:00:00Z`)
+
+---
+
+### 5. Daily Auto-Post with AI-Generated Content
+
+Automatically generate and schedule a daily post using OpenAI.
+
+```
+Schedule Trigger → OpenAI (generate caption) → HTTP Request (generate image) → Posta (Media: Upload) → Posta (Post: Create) → Posta (Post: Schedule)
+```
+
+---
+
+### 6. Cross-Post to Multiple Platforms with Platform-Specific Settings
+
+Post the same content across platforms with tailored settings per channel.
+
+```
+Manual Trigger → Posta (Post: Create with Platform Configurations)
+```
+
+**Setup:**
+1. In the **Posta** Create Post node, provide multiple **Social Account IDs** (comma-separated)
+2. Expand **Platform Configurations** to set per-platform options:
+   - **Instagram**: Placement = `reels`
+   - **TikTok**: Privacy Level = `Public`, Allow Comments = `true`
+   - **YouTube**: Title, Description, Privacy = `public`
+   - **LinkedIn**: Visibility = `Public`
+
+---
+
+### 7. Weekly Analytics Report
+
+Pull analytics and export to CSV on a schedule.
+
+```
+Schedule Trigger → Posta (Analytics: Overview) → Posta (Analytics: Export CSV) → Gmail (Send Attachment)
+```
+
+---
+
+### 8. Monitor Post Failures via Webhooks
+
+Set up a webhook to get notified when posts fail.
+
+```
+Posta (Webhook: Create) → [one-time setup]
+
+n8n Webhook Trigger → IF (status = "failed") → Slack (Send Message)
+```
 
 ## License
 

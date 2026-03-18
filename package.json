@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-posta",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n community node for the Posta social media management API",
   "keywords": [
     "n8n-community-node-package",
@@ -30,8 +30,8 @@
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
-    "lint": "eslint nodes credentials package.json",
-    "lintfix": "eslint nodes credentials package.json --fix",
+    "lint": "eslint 'nodes/**/*.ts' 'credentials/**/*.ts'",
+    "lintfix": "eslint 'nodes/**/*.ts' 'credentials/**/*.ts' --fix",
     "prepublishOnly": "pnpm build && pnpm lint",
     "test": "jest"
   },
