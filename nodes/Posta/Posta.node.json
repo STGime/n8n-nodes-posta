@@ -15,8 +15,5 @@
 			}
 		]
 	},
-	"alias": ["social media", "scheduling", "instagram", "tiktok", "facebook", "linkedin", "twitter", "youtube", "pinterest", "threads", "bluesky", "analytics"],
-	"subcategories": {
-		"Marketing & Content": ["Social Media"]
-	}
+	"alias": ["social media", "scheduling", "instagram", "tiktok", "facebook", "linkedin", "twitter", "youtube", "pinterest", "threads", "bluesky", "analytics"]
 }
