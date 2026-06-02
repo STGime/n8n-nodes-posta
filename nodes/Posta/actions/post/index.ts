@@ -8,6 +8,19 @@ function splitComma(value: string): string[] {
 		.filter(Boolean);
 }
 
+// The Posta API requires strict ISO 8601 UTC (e.g. 2026-06-30T00:00:00.000Z).
+// n8n's dateTime field can emit "2026-06-30 00:00:00" or a value with a numeric
+// offset, both of which the API rejects. Normalize whatever we get to UTC ISO.
+function toIsoUtc(value: unknown): string {
+	const date = new Date(value as string);
+	if (Number.isNaN(date.getTime())) {
+		throw new Error(
+			`Invalid date/time: "${String(value)}". Provide an ISO 8601 datetime (e.g. 2026-06-30T00:00:00Z).`,
+		);
+	}
+	return date.toISOString();
+}
+
 function buildPlatformConfigs(context: IExecuteFunctions, i: number): IDataObject | undefined {
 	const raw = context.getNodeParameter('platformConfigurations', i, {}) as IDataObject;
 	if (!raw || Object.keys(raw).length === 0) return undefined;
@@ -98,7 +111,7 @@ export async function execute(
 		if (additionalFields.mediaIds) {
 			body.mediaIds = splitComma(additionalFields.mediaIds as string);
 		}
-		if (additionalFields.scheduledAt) body.scheduledAt = additionalFields.scheduledAt;
+		if (additionalFields.scheduledAt) body.scheduledAt = toIsoUtc(additionalFields.scheduledAt);
 		if (additionalFields.isDraft !== undefined) body.isDraft = additionalFields.isDraft;
 		if (additionalFields.processingEnabled !== undefined)
 			body.processingEnabled = additionalFields.processingEnabled;
@@ -118,7 +131,10 @@ export async function execute(
 		if (updateFields.socialAccountIds) {
 			body.socialAccountIds = splitComma(updateFields.socialAccountIds as string);
 		}
-		if (updateFields.scheduledAt !== undefined) body.scheduledAt = updateFields.scheduledAt;
+		if (updateFields.scheduledAt !== undefined) {
+			// Allow clearing the schedule (null/empty); otherwise normalize to UTC ISO.
+			body.scheduledAt = updateFields.scheduledAt ? toIsoUtc(updateFields.scheduledAt) : null;
+		}
 		if (updateFields.isDraft !== undefined) body.isDraft = updateFields.isDraft;
 		if (updateFields.processingEnabled !== undefined)
 			body.processingEnabled = updateFields.processingEnabled;
@@ -151,7 +167,7 @@ export async function execute(
 		}
 	} else if (operation === 'schedule') {
 		const postId = this.getNodeParameter('postId', i) as string;
-		const scheduledAt = this.getNodeParameter('scheduledAt', i) as string;
+		const scheduledAt = toIsoUtc(this.getNodeParameter('scheduledAt', i));
 		responseData = await postaApiRequest.call(this, 'POST', `/posts/${postId}/schedule`, {
 			scheduledAt,
 		});
