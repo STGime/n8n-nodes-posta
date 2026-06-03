@@ -1,8 +1,12 @@
 import type { IExecuteFunctions, IDataObject, INodeExecutionData } from 'n8n-workflow';
 import { postaApiRequest, postaApiRequestAllItems } from '../../GenericFunctions';
 
-function splitComma(value: string): string[] {
-	return value
+// Accepts a comma-separated string, a single value, or a number (n8n passes the
+// raw type when a field is a pure expression, e.g. {{ $json.id }} -> 16). Coerce
+// to string first so a numeric id doesn't blow up with "value.split is not a function".
+function splitComma(value: unknown): string[] {
+	if (value === undefined || value === null) return [];
+	return String(value)
 		.split(',')
 		.map((s) => s.trim())
 		.filter(Boolean);
