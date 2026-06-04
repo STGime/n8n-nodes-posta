@@ -110,6 +110,33 @@ export async function execute(
 		if (title) body.title = title;
 
 		responseData = await postaApiRequest.call(this, 'POST', '/media/generate-carousel-pdf', body);
+	} else if (operation === 'generateTextCarouselPdf') {
+		const slidesParam = this.getNodeParameter('slides', i);
+		let slides: unknown = slidesParam;
+		if (typeof slidesParam === 'string') {
+			try {
+				slides = JSON.parse(slidesParam);
+			} catch {
+				throw new NodeOperationError(
+					this.getNode(),
+					'Slides must be valid JSON — an array of { media_id, title, body } objects',
+				);
+			}
+		}
+		if (!Array.isArray(slides)) {
+			throw new NodeOperationError(this.getNode(), 'Slides must be a JSON array');
+		}
+
+		const title = this.getNodeParameter('title', i, '') as string;
+		const body: IDataObject = { slides };
+		if (title) body.title = title;
+
+		responseData = await postaApiRequest.call(
+			this,
+			'POST',
+			'/media/generate-text-carousel-pdf',
+			body,
+		);
 	} else {
 		throw new Error(`Unknown operation: ${operation}`);
 	}

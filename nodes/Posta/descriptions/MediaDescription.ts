@@ -42,6 +42,12 @@ export const mediaOperations: INodeProperties[] = [
 				description: 'Generate a PDF carousel from multiple images',
 				action: 'Generate carousel PDF',
 			},
+			{
+				name: 'Generate Text Carousel PDF',
+				value: 'generateTextCarouselPdf',
+				description: 'Generate a PDF carousel with text composited over background images',
+				action: 'Generate text carousel PDF',
+			},
 		],
 		default: 'upload',
 	},
@@ -160,15 +166,33 @@ export const mediaFields: INodeProperties[] = [
 			},
 		},
 	},
+
+	// ------ Generate Text Carousel PDF ------
+	{
+		displayName: 'Slides',
+		name: 'slides',
+		type: 'json',
+		required: true,
+		default: '[\n  { "media_id": "", "title": "", "body": "" }\n]',
+		description:
+			'Array of slides (2-20). Each slide composites text over a background image. Each needs a "media_id" (an uploaded background image you own) and a "title" and/or "body". Usually mapped from an upstream node, e.g. {{ $json.slides }}.',
+		displayOptions: {
+			show: {
+				resource: ['media'],
+				operation: ['generateTextCarouselPdf'],
+			},
+		},
+	},
 	{
 		displayName: 'Title',
 		name: 'title',
 		type: 'string',
 		default: '',
+		description: 'Optional title for the generated PDF document',
 		displayOptions: {
 			show: {
 				resource: ['media'],
-				operation: ['generateCarouselPdf'],
+				operation: ['generateCarouselPdf', 'generateTextCarouselPdf'],
 			},
 		},
 	},

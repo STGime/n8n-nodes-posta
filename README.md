@@ -27,7 +27,7 @@ Full API reference: https://api.getposta.app/docs
 | Resource | Operations |
 |----------|-----------|
 | **Post** | Create, Update, Delete, Get, Get Many, Schedule, Publish Now, Cancel, Get Calendar |
-| **Media** | Upload (3-step signed URL), Get, Get Many, Delete, Generate Carousel PDF |
+| **Media** | Upload (3-step signed URL), Get, Get Many, Delete, Generate Carousel PDF, Generate Text Carousel PDF |
 | **Social Account** | Get Many, Get Pinterest Boards, Get TikTok Creator Info |
 | **Analytics** | Overview, Posts, Post Detail, Trends, Best Times, Content Types, Hashtags, Compare Posts, Benchmarks, Capabilities, Refresh Post, Refresh All, Export CSV, Export PDF |
 | **Platform** | Get Many, Get, Get Specifications, Get Aspect Ratios (public, no auth) |
@@ -182,6 +182,26 @@ Posta (Webhook: Create) → [one-time setup]
 
 n8n Webhook Trigger → IF (status = "failed") → Slack (Send Message)
 ```
+
+---
+
+### 9. Generate a LinkedIn Carousel from an Article
+
+Turn an article into a text-over-background LinkedIn carousel PDF.
+
+```
+HTTP/RSS (article) → LLM (write N slides) → fal.ai (N backgrounds) → Posta (Media: Upload, per background)
+  → Posta (Media: Generate Text Carousel PDF) → Posta (Post: Create on LinkedIn)
+```
+
+**Setup:**
+1. Generate slide copy with an LLM and a background image per slide; upload each background via **Media → Upload** to get media IDs.
+2. **Posta** node: Resource = **Media**, Operation = **Generate Text Carousel PDF**
+   - **Slides** = a JSON array (2–20), e.g. `{{ $json.slides }}` where each item is `{ "media_id": "<bg id>", "title": "...", "body": "..." }`
+   - **Title** = optional document title
+3. **Posta** node: Resource = **Post**, Operation = **Create**
+   - **Social Account IDs** = your LinkedIn account ID
+   - Under **Additional Fields**, set **Media IDs** = `{{ $json.media_id }}` (the generated PDF)
 
 ## License
 
