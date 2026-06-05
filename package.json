@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-posta",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "n8n community node for the Posta social media management API",
   "keywords": [
     "n8n-community-node-package",
