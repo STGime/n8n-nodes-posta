@@ -184,6 +184,20 @@ export const mediaFields: INodeProperties[] = [
 		},
 	},
 	{
+		displayName: 'Logo Media ID',
+		name: 'logoMediaId',
+		type: 'string',
+		default: '',
+		description:
+			'Optional media ID of a logo image (an uploaded image you own) shown in the bottom-right corner of every slide',
+		displayOptions: {
+			show: {
+				resource: ['media'],
+				operation: ['generateTextCarouselPdf'],
+			},
+		},
+	},
+	{
 		displayName: 'Title',
 		name: 'title',
 		type: 'string',

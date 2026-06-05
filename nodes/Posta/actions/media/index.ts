@@ -128,8 +128,10 @@ export async function execute(
 		}
 
 		const title = this.getNodeParameter('title', i, '') as string;
+		const logoMediaId = this.getNodeParameter('logoMediaId', i, '') as string;
 		const body: IDataObject = { slides };
 		if (title) body.title = title;
+		if (logoMediaId) body.logo_media_id = logoMediaId;
 
 		responseData = await postaApiRequest.call(
 			this,

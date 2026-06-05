@@ -198,6 +198,7 @@ HTTP/RSS (article) → LLM (write N slides) → fal.ai (N backgrounds) → Posta
 1. Generate slide copy with an LLM and a background image per slide; upload each background via **Media → Upload** to get media IDs.
 2. **Posta** node: Resource = **Media**, Operation = **Generate Text Carousel PDF**
    - **Slides** = a JSON array (2–20), e.g. `{{ $json.slides }}` where each item is `{ "media_id": "<bg id>", "title": "...", "body": "..." }`
+   - **Logo Media ID** = optional; the media ID of an uploaded logo image shown in the bottom-right of every slide
    - **Title** = optional document title
 3. **Posta** node: Resource = **Post**, Operation = **Create**
    - **Social Account IDs** = your LinkedIn account ID
