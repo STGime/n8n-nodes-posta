@@ -58,7 +58,7 @@ Connect any n8n node that produces binary data (HTTP Request, Read File, etc.) u
 
 ## Ready-to-import workflow templates
 
-Don't want to build from scratch? Import a complete, documented workflow from the **[Posta workflow gallery](https://getposta.app/workflows)** — download the JSON, or in n8n use **⋯ menu → Import from URL** with the links below:
+Don't want to build from scratch? Import a complete, documented workflow from the **[Posta workflow gallery](https://getposta.app/workflows)** (source on **[GitHub](https://github.com/STGime/posta-n8n-workflows)**) — download the JSON, or in n8n use **⋯ menu → Import from URL** with the links below:
 
 | Workflow | What it does | Import URL |
 |----------|--------------|------------|
