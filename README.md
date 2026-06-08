@@ -60,12 +60,12 @@ Connect any n8n node that produces binary data (HTTP Request, Read File, etc.) u
 
 Don't want to build from scratch? Import a complete, documented workflow from the **[Posta workflow gallery](https://getposta.app/workflows)** (source on **[GitHub](https://github.com/STGime/posta-n8n-workflows)**) — download the JSON, or in n8n use **⋯ menu → Import from URL** with the links below:
 
-| Workflow | What it does | Import URL |
-|----------|--------------|------------|
-| [Share new blog posts to social media](https://getposta.app/workflows/blog-to-social-media) | RSS → scheduled post with image, across your accounts | `https://getposta.app/assets/workflows/blog-to-social-media.json` |
-| [Turn a blog post into a LinkedIn carousel](https://getposta.app/workflows/blog-to-linkedin-carousel) | Article → AI 5-slide carousel PDF (DeepSeek + fal.ai) | `https://getposta.app/assets/workflows/blog-to-linkedin-carousel.json` |
-| [Run a 5-day product launch campaign](https://getposta.app/workflows/product-launch-campaign) | Product → per-platform captions, scheduled over 5 days | `https://getposta.app/assets/workflows/product-launch-campaign.json` |
-| [Promote your latest YouTube video](https://getposta.app/workflows/youtube-to-social-media) | YouTube feed → AI promo drafts on every platform | `https://getposta.app/assets/workflows/youtube-to-social-media.json` |
+| Workflow | What it does | Import URL | Demo |
+|----------|--------------|------------|------|
+| [Share new blog posts to social media](https://getposta.app/workflows/blog-to-social-media) | RSS → scheduled post with image, across your accounts | `https://getposta.app/assets/workflows/blog-to-social-media.json` | [▶ Watch](https://youtu.be/Ra9x57asFnk) |
+| [Turn a blog post into a LinkedIn carousel](https://getposta.app/workflows/blog-to-linkedin-carousel) | Article → AI 5-slide carousel PDF (DeepSeek + fal.ai) | `https://getposta.app/assets/workflows/blog-to-linkedin-carousel.json` | [▶ Watch](https://youtu.be/CC-_i6LanLg) |
+| [Run a 5-day product launch campaign](https://getposta.app/workflows/product-launch-campaign) | Product → per-platform captions, scheduled over 5 days | `https://getposta.app/assets/workflows/product-launch-campaign.json` | [▶ Watch](https://youtu.be/ORQZK_oApIQ) |
+| [Promote your latest YouTube video](https://getposta.app/workflows/youtube-to-social-media) | YouTube feed → AI promo drafts on every platform | `https://getposta.app/assets/workflows/youtube-to-social-media.json` | [▶ Watch](https://youtu.be/tTWaYb71YyA) |
 
 Each template includes step-by-step docs and the credentials you'll need. The hand-built examples below explain the individual building blocks.
 
